@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// model Item {
+//   id                  Int                  @id @default(autoincrement())
+//   name                String               @unique
+//   categoryId Int 
+//   categorySubLevel1   CategorySublevel1 @relation(fields: [categoryId], references: [id])
+//   itemImg            String?
+//   desc               String?
+//   amount             Int?
+//   price              Float?
+//   costPrice          Float?
+// }
+
+// model CategorySublevel1 {
+//   id                 Int                  @id @default(autoincrement())
+//   name               String               @unique
+//   desc               String
+//   categorySublevel2  CategorySublevel2[]  // One-to-many relationship
+//   Item Item[]
+// }
+
+// model CategorySublevel2 {
+//   id                 Int                  @id @default(autoincrement())
+//   name               String               @unique
+//   desc               String
+//   categorySublevel1Id Int                // Foreign key to CategorySublevel1
+//   categorySublevel1  CategorySublevel1    @relation(fields: [categorySublevel1Id], references: [id])
+// }
+model Item {
+  id                  Int                  @id @default(autoincrement())
+  name                String               @unique
+  categoryId Int 
+  categorySubLevel1   CategorySublevel1 @relation(fields: [categoryId], references: [id])
+  itemImg            String?
+  desc               String?
+  amount             Int
+  price              Float
+  costPrice          Float
+}
+
+model CategorySublevel1 {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  desc               String?
+  categorySublevel2  CategorySublevel2[]  // One-to-many relationship
+  Item Item[]
+}
+
+model CategorySublevel2 {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  desc               String?
+  categorySublevel1Id Int                // Foreign key to CategorySublevel1
+  categorySublevel1  CategorySublevel1    @relation(fields: [categorySublevel1Id], references: [id])
+}
+
+
+// model Item {
+//   id                  Int                  @id @default(autoincrement())
+//   name                String               @unique
+//   categoryId Int 
+//   categorySubLevel1   CategorySublevel1 @relation(fields: [categoryId], references: [id])
+//   itemImg            String?
+//   desc               String?
+//   amount             Int?
+//   price              Float?
+//   costPrice          Float?
+// }
+
+// model CategorySublevel1 {
+//   id                 Int                  @id @default(autoincrement())
+//   name               String               @unique
+//   desc               String
+//   categorySublevel2List Int[]
+//   categorySublevel2  CategorySublevel2  @relation(fields: [categorySublevel2List], references: [id])
+//   Item Item[]
+// }
+
+
+// model CategorySublevel2 {
+//   id                 Int                  @id @default(autoincrement())
+//   name               String               @unique
+//   desc               String
+//   categorySublevel1  CategorySublevel1[]
+// }

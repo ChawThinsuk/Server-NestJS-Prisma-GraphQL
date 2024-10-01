@@ -1,0 +1,104 @@
+type Item {
+  id: Int
+  name: String
+  categoryId: Int
+  categorySubLevel1: CategorySublevel1
+  itemImg: String
+  desc: String
+  amount: Int!
+  price: Float!
+  costPrice: Float!
+}
+type CategorySublevel1 {
+  id: Int!
+  name: String!
+  desc: String
+  categorySublevel2: [CategorySublevel2!]!
+}
+
+type CategorySublevel2 {
+  id: Int!
+  name: String!
+  desc: String
+  categorySublevel1Id: Int
+}
+# Input
+input CreateItemInput {
+  name: String!
+  categoryId: Int!
+  itemImg: String
+  desc: String
+  amount: Int!
+  price: Float!
+  costPrice: Float!
+}
+input UpdateItemInput {
+  name: String
+  itemImg: String
+  desc: String
+  amount: Int
+  price: Float
+  costPrice: Float
+  categoryId: Int
+}
+
+input CreateCategorySublevel1Input {
+  name: String!
+  desc: String
+  categorySublevel2: [CreateCategorySublevel2InputNested!]
+}
+input CreateCategorySublevel2InputNested {
+  name: String!
+  desc: String
+}
+
+input CreateCategorySublevel2Input {
+  name: String!
+  desc: String
+  categorySublevel1Id: Int!
+}
+input UpdateCategorySublevel1Input {
+  name: String
+  desc: String
+  categorySublevel2: [CreateCategorySublevel2Input]
+}
+input UpdateCategorySublevel2Input {
+  name: String
+  desc: String
+  categorySublevel1Id: Int
+}
+
+type Mutation {
+  createItem(input: CreateItemInput!): Item!
+  updateItem(id: Int!, data: UpdateItemInput!): Item!
+  deleteItem(id: Int!): Item!
+  createCategoryWithSubcategories(
+    input: CreateCategorySublevel1Input!
+  ): CategorySublevel1!
+  createCategorySublevel1(
+    input: CreateCategorySublevel1Input!
+  ): CategorySublevel1
+  updateCategory(
+    id: Int!
+    input: UpdateCategorySublevel1Input!
+  ): CategorySublevel1!
+  deleteCategory(id: Int!): CategorySublevel1!
+  #  TODO
+  createCategorySublevel2(
+    input: CreateCategorySublevel2Input!
+  ): CategorySublevel2!
+  updateCategorySublevel2(
+    id: Int!
+    data: UpdateCategorySublevel2Input!
+  ): CategorySublevel2!
+  deleteCategorySublevel2(id: Int!): CategorySublevel2!
+}
+type Query {
+  getCategoryWithId(id: Int): CategorySublevel1
+  getAllCategories: [CategorySublevel1]
+  getAllItems: [Item!]!
+  getItemById(id: Int!): Item
+  getItemByName(name: String!): Item
+  getAllCategorySublevel2: [CategorySublevel2!]!
+  getCategorySublevel2ById(id: Int!): CategorySublevel2!
+}
